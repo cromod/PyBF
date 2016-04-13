@@ -2,7 +2,7 @@
 
 import sys
 
-array = [0] # array of bytes
+array = [0] # byte array
 ptr = 0 # data pointer
 
 def readNoLoop(char):
@@ -47,9 +47,8 @@ def interpret(charChain):
     it+=1
 
 if __name__ == "__main__":
-
+  # Brainfuck program to print "Hello World!"
   cmd = '++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.'
-  #cmd = '[,.]'
   try:
     interpret(cmd)
   except:
