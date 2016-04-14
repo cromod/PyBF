@@ -5,32 +5,52 @@ import sys
 byte_array = [0] # array of bytes
 data_ptr = 0 # data pointer
 
-def read_no_loop(char):
+# Increment the byte at the data pointer
+def increment_byte():
+    byte_array[data_ptr] += 1
+
+# Decrement the byte at the data pointer
+def decrement_byte():
+    byte_array[data_ptr] -= 1
+    if byte_array[data_ptr] < 0:
+        raise ValueError("Negative value in array")
+
+# Increment the data pointer
+def increment_ptr():
     global data_ptr
-    # Increment/Decrement the byte at the data pointer
-    if char == '+':
-        byte_array[data_ptr] += 1
-    elif char == '-':
-        byte_array[data_ptr] -= 1
-        if byte_array[data_ptr] < 0:
-            raise ValueError("Negative value in array")
-    # Increment/Decrement the data pointer
-    elif char == '>':
-        data_ptr += 1
-        while data_ptr >= len(byte_array)-1:
-            byte_array.append(0)
-    elif char == '<':
-        data_ptr -= 1
-        if data_ptr < 0:
-            raise ValueError("Negative value of pointer")
-    # Output the byte at the data pointer
-    elif char == '.':
-        sys.stdout.write(chr(byte_array[data_ptr]))
-    # Store one byte of input in the byte at the data pointer
-    elif char == ',':
-        byte_array[data_ptr] = ord(sys.stdin.read(1))
-    #print data_ptr, byte_array
-      
+    data_ptr += 1
+    if data_ptr == len(byte_array):
+        byte_array.append(0)
+
+# Decrement the data pointer
+def decrement_ptr():
+    global data_ptr
+    data_ptr -= 1
+    if data_ptr < 0:
+        raise ValueError("Negative value of pointer")
+
+# Output the byte at the data pointer
+def output():
+    sys.stdout.write(chr(byte_array[data_ptr]))
+
+# Store one byte of input in the byte at the data pointer
+def store():
+    byte_array[data_ptr] = ord(sys.stdin.read(1))
+
+# Read instructions except loop
+instructions = {
+    '+': increment_byte,
+    '-': decrement_byte,
+    '>': increment_ptr,
+    '<': decrement_ptr,
+    '.': output,
+    ',': store
+}
+def read_no_loop(char):
+    func = instructions[char]
+    func()
+
+# Interpret brainfuck code
 def interpret(char_chain):
     it = 0
     loop_begin = []
