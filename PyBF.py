@@ -35,7 +35,9 @@ def output():
 
 # Store one byte of input in the byte at the data pointer
 def store():
-    byte_array[data_ptr] = ord(sys.stdin.read(1))
+    save = sys.stdin.read(1)
+    if save:
+        byte_array[data_ptr] = ord(save)
 
 # Read instructions except loop
 instructions = {
@@ -52,24 +54,25 @@ def read_no_loop(char):
 
 # Interpret brainfuck code
 def interpret(char_chain):
-    it = 0
-    loop_begin = []
-    while it < len(char_chain):
-        if char_chain[it] == '[':
-            loop_begin.append(it)
-        elif char_chain[it] == ']':
-            sub_chain = char_chain[loop_begin[-1]+1:it]
-            while byte_array[data_ptr] > 0:
-                interpret(sub_chain)
-            loop_begin.pop()
+    skip = 0
+    for it, char in enumerate(char_chain):
+        if skip:
+            if char == '[': skip += 1 # Increment the level of nested loops to skip
+            if char == ']': skip -= 1 # Decrement the level of nested loops to skip
+            continue # Actually skip that character
+        if char == '[':
+            while byte_array[data_ptr]:
+                # Recurse to interpret the loop
+                interpret(char_chain[it+1:])
+            # Skip the loop when the current cell is 0
+            skip = 1
+        elif char == ']':
+            # End the recursion when reaching the end of the loop
+            return
         else:
-            read_no_loop(char_chain[it])
-        it += 1
+            read_no_loop(char)
 
 if __name__ == "__main__":
     # Brainfuck program to print "Hello World!"
     cmd = '++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.'
-    try:
-        interpret(cmd)
-    except:
-        raise
+    interpret(cmd)
