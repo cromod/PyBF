@@ -12,8 +12,8 @@ def increment_byte():
 # Decrement the byte at the data pointer
 def decrement_byte():
     byte_array[data_ptr] -= 1
-    if byte_array[data_ptr] < 0:
-        raise ValueError("Negative value in array")
+    #if byte_array[data_ptr] < 0:
+        #raise ValueError("Negative value in array")
 
 # Increment the data pointer
 def increment_ptr():
