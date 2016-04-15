@@ -49,8 +49,11 @@ instructions = {
     ',': store
 }
 def read_no_loop(char):
-    func = instructions[char]
-    func()
+    try:
+        func = instructions[char]
+        func()
+    except KeyError:
+        pass
 
 # Interpret brainfuck code
 def interpret(char_chain):
