@@ -73,6 +73,10 @@ def interpret(char_chain):
             read_no_loop(char)
 
 if __name__ == "__main__":
-    # Brainfuck program to print "Hello World!"
-    cmd = '++++++++[>++++[>++>+++>+++>+<<<<-]>+>+>->>+[<]<-]>>.>---.+++++++..+++.>>.<-.<.+++.------.--------.>>+.>++.'
-    interpret(cmd)
+    try:
+        file_name = sys.argv[1]
+        with open(file_name,'r') as file:
+            cmd = file.read()
+            interpret(cmd)
+    except IndexError:
+        print "Error: provide a source file as first argument"
