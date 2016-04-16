@@ -74,6 +74,8 @@ def interpret(char_chain):
             return
         else:
             read_no_loop(char)
+    if skip > 0:
+        print "\nWarning: No closing bracket"
 
 if __name__ == "__main__":
     try:
