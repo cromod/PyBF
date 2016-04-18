@@ -48,12 +48,6 @@ instructions = {
     '.': output,
     ',': store
 }
-def read_no_loop(char):
-    try:
-        func = instructions[char]
-        func()
-    except KeyError:
-        pass
 
 # Interpret brainfuck code
 def interpret(char_chain):
@@ -73,7 +67,7 @@ def interpret(char_chain):
             # End the recursion when reaching the end of the loop
             return
         else:
-            read_no_loop(char)
+            instructions.get(char, lambda: None)()
     if skip > 0:
         print "\nWarning: No closing bracket"
 
